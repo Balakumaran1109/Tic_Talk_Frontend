@@ -1,0 +1,51 @@
+⚡ React + Vite Setup
+✅ 1. Create Project
+
+Open terminal:
+
+npm create vite@latest
+
+✅ 2. Project Details
+
+It will ask:
+
+✔ Project name: my-app
+✔ Select a framework: React
+✔ Select a variant: JavaScript (or TypeScript)
+
+✅ 3. Go into project
+cd my-app
+
+✅ 4. Install dependencies
+npm install
+
+✅ 5. Run project
+npm run dev
+
+
+✅ Install React Router
+npm install react-router-dom
+
+✅ Install Axios
+npm install axios
+
+✅ Install Socket.IO Client (for your project 👀)
+npm install socket.io-client
+
+
+Step 2 — Setup Socket Connection
+services/socket.js
+import { io } from "socket.io-client";
+
+const token = localStorage.getItem("token");
+
+export const socket = io("http://localhost:5000", {
+  query: {
+    token: token
+  }
+});
+
+
+import axios from "axios";
+
+axios.defaults.baseURL = "https://quiz-app-backend-9r3f.onrender.com";
