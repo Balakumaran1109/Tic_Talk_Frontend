@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { api } from "../api/api";
+import { Link, useNavigate } from "react-router-dom";
+import ticTacToe_Img from "../assets/Tic_Tac_Toe.png";
 import { LuBrain } from "react-icons/lu";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { GiTrophy } from "react-icons/gi";
-import ticTacToe_Img from "../assets/Tic_Tac_Toe.png";
-import { Link, useNavigate } from "react-router-dom";
 
-function Register() {
+function Login() {
   const [userData, setUserData] = useState({
-    username: "",
     email: "",
     password: "",
   });
@@ -26,23 +25,9 @@ function Register() {
     }));
   };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
-    setUserData({
-      username: "",
-      email: "",
-      password: "",
-    });
-
-    // Validate input data
-    if (!userData.username || !userData.email || !userData.password) {
-      setError("All fields are required");
-      return;
-    }
-
-    if (userData.password.length < 6) {
-      setError("Password must be at least 6 characters");
+  const handleLogin = async (e) => {
+    if (!userData.email || !userData.password) {
+      setError("Email and password are required");
       return;
     }
 
@@ -51,21 +36,17 @@ function Register() {
     setSuccess("");
 
     try {
-      const response = await api.post("/register", userData);
+      const response = await api.post("/login", userData);
+
+      const token = response?.data?.access_token;
+
+      sessionStorage.setItem("token", token);
 
       setSuccess(response.data.message);
 
-      success ? navigate("/profile") : "null";
-
-      setUserData({
-        username: "",
-        email: "",
-        password: "",
-      });
+      navigate("/profile");
     } catch (err) {
-      setError(
-        err.response?.data?.error || "Something went wrong, please try again",
-      );
+      setError(err.response?.data?.error || "Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -86,19 +67,12 @@ function Register() {
               </span>
             </h1>
             <p className="text-gray-500 mt-2 text-lg">
-              Register to start your game journey
+              Login to continue your game journey
             </p>
           </div>
 
           {/* Login inputs */}
           <div className="flex flex-col justify-center gap-5 mt-10 w-full max-w-md">
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              className="outline outline-gray-300 rounded-xl p-4 "
-              onChange={handleInputChange}
-            />
             <input
               type="text"
               name="email"
@@ -107,7 +81,7 @@ function Register() {
               onChange={handleInputChange}
             />
             <input
-              type="text"
+              type="password"
               name="password"
               placeholder="Password"
               className="outline outline-gray-300 rounded-xl p-4 "
@@ -115,22 +89,24 @@ function Register() {
             />
             <button
               disabled={loading}
-              onClick={handleRegister}
+              onClick={handleLogin}
               className="bg-orange-500 text-white text-lg font-bold p-4 rounded-xl hover:bg-orange-600 transition-all duration-300 cursor-pointer"
             >
-              {loading ? "Registering..." : "Register"}
+              {loading ? "Logging In..." : "Login"}
             </button>
-
             {error ? <p className="text-red-500 font-bold">{error}</p> : null}
+            {success ? (
+              <p className="text-green-500 font-bold">{success}</p>
+            ) : null}
 
             <p className="text-gray-600 text-md">
-              Already a player?
+              New here?
               <Link
-                to={"/"}
+                to={"/register"}
                 className="text-orange-500 hover:underline font-medium"
               >
                 {" "}
-                Login
+                Create an account
               </Link>
             </p>
           </div>
@@ -216,40 +192,4 @@ function Register() {
   );
 }
 
-export default Register;
-
-{
-  /* <div>
-      <h2>Register</h2>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-
-      <input
-        name="username"
-        placeholder="Username"
-        value={userData.username}
-        onChange={handleInputChange}
-      />
-
-      <input
-        name="email"
-        type="email"
-        placeholder="Email"
-        value={userData.email}
-        onChange={handleInputChange}
-      />
-
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        value={userData.password}
-        onChange={handleInputChange}
-      />
-
-      <button onClick={handleRegister} disabled={loading}>
-        {loading ? "Registering..." : "Register"}
-      </button>
-    </div> */
-}
+export default Login;

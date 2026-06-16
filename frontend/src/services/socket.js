@@ -1,16 +1,19 @@
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 
-const token = localStorage.getItem("token");
+const URL = "http://localhost:5000";
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5000";
+export const createSocket = () => {
 
-export const socket = io(SOCKET_URL, {
-  auth: {
-    token: "token",
-  },
-  transports: ["websocket"],
-  reconnection: true,
-  reconnectionAttempts: 5,
-  reconnectionDelay: 1000,
-  autoConnect: false
-});
+  const socket = io(URL, {
+    auth: { 
+      token: sessionStorage.getItem("token")
+    },
+    autoConnect: false,
+    transports: ["polling"],
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 1000,
+  });
+
+  return socket;
+};

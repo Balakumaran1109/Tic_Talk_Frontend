@@ -1,50 +1,39 @@
 import { useEffect } from "react";
-import { socket } from "./services/socket";
+// import { socket } from "./services/socket";
 import axios from "axios";
 import Register from "./auth/register";
+import Login from "./auth/Login";
+import Game from "./pages/game";
+import Chat from "./pages/Chat";
+import History from "./pages/History";
+import Leaderboard from "./pages/Leadboard";
+import Room from "./pages/Room";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ForgotPassword from "./auth/ForgetPassword";
+import ResetPassword from "./auth/ResetPassword";
+import Profile from "./pages/Profile";
+import ProtectedRoute from "./services/ProtectedRoute";
 
-axios.defaults.baseURL = "http://localhost:5000";
-// console.log(import.meta.env.VITE_SOCKET_URL);
-
-
-function App(){
-  useEffect(() => {
-    const handleConnect = () => {
-      console.log("Connected:", socket.id);
-    };
-
-    const handleError = (err) => {
-      console.error("Connection error:", err.message);
-    };
-
-    const handleReconnect = () => {
-      console.log("Reconnected");
-    };
-
-    const handleDisconnect = (reason) => {
-      console.log("Disconnected:", reason);
-    };
-
-    // Manual connection
-    socket.connect();
-
-    socket.on("connect", handleConnect);
-    socket.on("connect_error", handleError);
-    socket.on("reconnect", handleReconnect);
-    socket.on("disconnect", handleDisconnect);
-
-    return () => {
-      socket.off("connect", handleConnect);
-      socket.off("connect_error", handleError);
-      socket.off("reconnect", handleReconnect);
-      socket.off("disconnect", handleDisconnect);
-    };
-  }, []);
-
+function App() {
   return (
-  <>
-    <Register></Register>
-  </>
-)};
+    <BrowserRouter>
+      {/* <Register/> */}
+      {/* <Room/> */}
+      {/* <ForgotPassword/> */}
+      {/* <ResetPassword/> */}
+      {/* <Game /> */}
+      {/* <History/> */}
+      {/* <Chat/> */}
+      {/* <Leaderboard/> */}
+      <Routes>
+        <Route path="/" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
+
+        {/* <Route path="/game/:roomId" element={<Game/>}></Route> */}
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
 export default App;

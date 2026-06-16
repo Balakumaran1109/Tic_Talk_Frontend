@@ -49,3 +49,51 @@ export const socket = io("http://localhost:5000", {
 import axios from "axios";
 
 axios.defaults.baseURL = "https://quiz-app-backend-9r3f.onrender.com";
+
+
+
+
+
+
+
+
+
+
+ return (
+    <div>
+      <h2>Register</h2>
+
+      <form onSubmit={handleRegister}>
+        <input
+          name="username"
+          placeholder="Username"
+          value={formData.username}
+          onChange={handleChange}
+        />
+
+        <input
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+        />
+
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+        />
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
+      </form>
+
+      {/* ✅ Feedback messages */}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
+    </div>
+  );
+}
