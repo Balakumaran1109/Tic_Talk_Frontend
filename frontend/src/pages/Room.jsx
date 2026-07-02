@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { data, useNavigate } from "react-router-dom";
 import { api } from "../api/api";
+import { LuUsers } from "react-icons/lu";
+import { MdOutlineContentCopy } from "react-icons/md";
 
 function Room() {
   const [roomId, setRoomId] = useState("");
   const [checkRoomId, setCheckRoomId] = useState("");
   const [loading, setLoading] = useState("");
+  const [copyText, setCopyText] = useState("");
   const navigate = useNavigate();
 
   // Create Room
@@ -71,6 +74,16 @@ function Room() {
     }
   };
 
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(roomId);
+    setCopyText(true);
+    console.log("true");
+
+    setTimeout(() => {
+      setCopyText(false);
+    }, 2000);
+  };
+
   // useEffect(() => {
   //   if (loading == "false") {
   //     navigate(`/game/${roomId}`);
@@ -78,53 +91,77 @@ function Room() {
   // }, [loading])
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 border rounded-lg p-5">
-      <h1>
-        <span className="text-orange-500 font-extrabold text-2xl"> Tic</span>
-        <span className="text-black-500 font-extrabold text-2xl"> Tac</span>
-        <span className="text-orange-500 font-extrabold text-2xl"> Toe</span>
-        <span className="text-black-500 font-extrabold text-2xl"> Room</span>
-      </h1>
-      <div className="flex items-center justify-center gap-10">
+    <div className="w-full max-w-2xl flex flex-col items-center justify-center gap-5 border border-gray-300 shadow-md rounded-lg p-5">
+      <div className="flex items-center gap-2">
+        <LuUsers className="text-orange-500 text-2xl" />
+        <h1 className="font-extrabold text-2xl font-extrabold text-2xl font-extrabold text-2xl font-extrabold text-2xl">
+          <span className="text-black"> Tic</span>
+          <span className="text-orange-500"> Tac</span>
+          <span className="text-black"> Toe</span>
+          <span className="text-orange-500"> Room</span>
+        </h1>
+      </div>
+      <div className="w-full flex flex-col md:flex-row items-stretch gap-6 mt-3">
         {/* Create Room */}
-        <div className="flex flex-col items-center border rounded-lg p-5">
-          <p className="text-gray-500">
-            Click create room and share
+        <div className="flex flex-col flex-1 items-center border border-gray-300 shadow-md rounded-lg px-5 py-3 gap-2 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+          <h1 className="text-md font-bold">Create Room</h1>
+          <p className="text-gray-500 text-sm text-center">
+            Create a new room and share
             <br />
-            the room id with anyone
+            the room ID with anyone
           </p>
-          <br />
-          <div className="flex gap-5">
-            <button
-              onClick={createRoom}
-              className="bg-orange-500 text-white p-2 text-sm font-semibold rounded-xl hover:bg-orange-600 transition-all duration-300 cursor-pointer"
-            >
-              Create Room
-            </button>
-            <p className="py-2">{roomId}</p>
-            {roomId ? (
+          <div className="flex flex-col items-center gap-4 mt-2">
+            <div>
               <button
-                onClick={() => navigator.clipboard.writeText(roomId)}
-                className="bg-black text-white p-2 text-sm font-semibold rounded-xl hover:bg-gray-800 transition-all duration-300 cursor-pointer"
+                onClick={createRoom}
+                className="bg-orange-500 text-white p-2 text-sm font-semibold rounded-md hover:bg-black transition-all duration-300 cursor-pointer"
               >
-                Copy ID
+                Create Room
               </button>
-            ) : null}
+            </div>
+            <div className="flex items-center gap-2 lg:gap-4">
+              <p className="font-semibold text-sm">Room ID: </p>
+              {roomId ? (
+                <code>{roomId}</code>
+              ) : (
+                <span className="text-gray-400 text-xs">
+                  Create room to generate ID
+                </span>
+              )}
+              {!copyText
+                ? roomId && (
+                    <button
+                      onClick={handleCopy}
+                      className="text-black hover:text-orange-500 cursor-pointer"
+                    >
+                      <MdOutlineContentCopy />
+                    </button>
+                  )
+                : roomId && (
+                    <p className="text-green-600 font-semibold">Copied</p>
+                  )}
+            </div>
           </div>
         </div>
 
         {/* Join Room */}
-        <div className="flex flex-col items-center border rounded-xl p-5">
-          <p className="text-gray-500 pb-3">
+        <div className="flex flex-col flex-1 items-center border rounded-xl px-5 py-3 gap-4 border border-gray-300 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+          <h1 className="text-md font-bold text-orange-500">Join Room</h1>
+          <p className="text-gray-500 text-sm text-center">
             Join room by entering the code
           </p>
           <input
             value={checkRoomId}
             onChange={(e) => setCheckRoomId(e.target.value)}
             placeholder="Enter Room ID"
-            className="outline outline-gray-300 rounded-xl px-2 py-1 text-center max-w-3xs"
+            className="w-full max-w-sm rounded-xl border border-gray-300 px-3 py-2 text-center"
           />{" "}
-          <button onClick={joinRoom} className="bg-black text-white p-2 text-sm font-semibold rounded-xl hover:bg-gray-800 transition-all duration-300 cursor-pointer mt-4">Join Room</button>
+          <button
+            onClick={joinRoom}
+            className="bg-black text-white py-2 px-3 text-sm font-semibold rounded-md hover:bg-orange-500 transition-all duration-300 cursor-pointer"
+          >
+            Join Room
+          </button>
         </div>
       </div>
     </div>

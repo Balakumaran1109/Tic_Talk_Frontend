@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../api/api";
+import { ImStatsBars } from "react-icons/im";
+import { IoGameControllerOutline } from "react-icons/io5";
+import { BsTrophy } from "react-icons/bs";
+import { HiOutlineUser } from "react-icons/hi2";
+import { BsFire } from "react-icons/bs";
+import { FaRegStar } from "react-icons/fa";
+import { RiPieChartLine } from "react-icons/ri";
+
+
 
 function Stats() {
   const [stats, setStats] = useState(null);
@@ -48,31 +57,82 @@ function Stats() {
   }
 
   return (
-    <div>
-      <h1 className="text-center text-orange-500 font-extrabold text-2xl mb-5">
-        Player Stats
-      </h1>
+    <div className="w-full flex flex-col items-center justify-center border border-gray-300 p-5 rounded-md shadow-md">
+      <div className="w-full flex flex-1 items-center justify-center gap-2 mb-4">
+        <ImStatsBars className="text-orange-500" size={30} />
+        <h1 className="text-black font-extrabold text-2xl">Player Stats</h1>
+      </div>
 
-      <table className="border border-collapse w-full">
-        <thead>
-          <tr>
-            <th className="border px-4 p-2">Username</th>
-            <th className="border px-4 p-2">Total matches</th>
-            <th className="border px-4 p-2">Wins</th>
-            <th className="border px-4 p-2">Losses</th>
-            <th className="border px-4 p-2">Win Rate</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border px-4 p-2">{stats.username}</td>
-            <td className="border px-4 p-2">{stats.total_matches}</td>
-            <td className="border px-4 p-2">{stats.wins}</td>
-            <td className="border px-4 p-2">{stats.losses}</td>
-            <td className="border px-4 p-2">{stats.win_rate}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="max-w-lg w-full flex flex-col md:flex-row items-center justify-between xl:justify-center gap-4 flex-wrap mt-3">
+
+        {/* Total matches */}
+        <div className="min-w-[220px] flex items-center pl-6 border border-gray-300 shadow-md rounded-md px-3 py-2 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+          <div>
+            <IoGameControllerOutline size={35} className="text-orange-500"/>
+          </div>
+          <div className="w-full flex flex-col items-center text-center">
+            <p className="text-black font-bold text-md">Total Matches</p>
+            <p className="font-bold text-xl">{stats.total_matches}</p>
+          </div>
+        </div>
+
+        {/* Wins */}
+        <div className="min-w-[220px] flex items-center pl-6 border border-gray-300 shadow-md rounded-md px-3 py-2 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+          <div>
+            <BsTrophy size={35} className="text-orange-500"/>
+          </div>
+          <div className="w-full flex flex-col items-center text-center">
+            <p className="text-black font-bold text-md">Wins</p>
+            <p className="font-bold text-xl">{stats.wins}</p>
+          </div>
+        </div>
+
+        {/* Losses */}
+        <div className="min-w-[220px] flex items-center pl-6 border border-gray-300 shadow-md rounded-md px-3 py-2 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+          <div>
+            <HiOutlineUser size={35} className="text-orange-500"/>
+          </div>
+          <div className="w-full flex flex-col items-center text-center">
+            <p className="text-black font-bold text-md">Losses</p>
+            <p className="font-bold text-xl">{stats.losses}</p>
+          </div>
+        </div>
+
+        {/* Win rate */}
+        <div className="min-w-[220px] flex items-center pl-6 border border-gray-300 shadow-md rounded-md px-3 py-2 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+          <div>
+            <RiPieChartLine size={35} className="text-orange-500"/>
+          </div>
+          <div className="w-full flex flex-col items-center text-center">
+            <p className="text-black font-bold text-md">Win rate</p>
+            <p className="font-bold text-xl">{(stats.wins/stats.total_matches*100).toFixed()}%</p>
+          </div>
+        </div>
+
+        {/* Current streak */}
+        <div className="min-w-[220px] flex items-center pl-6 border border-gray-300 shadow-md rounded-md px-3 py-2 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+          <div>
+            <BsFire size={35} className="text-orange-500"/>
+          </div>
+          <div className="w-full flex flex-col items-center text-center">
+            <p className="text-black font-bold text-md">Current streak</p>
+            <p className="font-bold text-xl">0</p>
+          </div>
+        </div>
+
+         {/* Best streak */}
+        <div className="min-w-[220px] flex items-center pl-6 border border-gray-300 shadow-md rounded-md px-3 py-2 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+          <div>
+            <FaRegStar size={35} className="text-orange-500"/>
+          </div>
+          <div className="w-full flex flex-col items-center text-center">
+            <p className="text-black font-bold text-md">Best streak</p>
+            <p className="font-bold text-xl">0</p>
+          </div>
+        </div>
+      </div>
+
+      
     </div>
   );
 }

@@ -29,6 +29,7 @@ function App() {
         <Route path="/" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/game/:id" element={<Game />}></Route>
 
         {/* <Route path="/game/:roomId" element={<Game/>}></Route> */}
       </Routes>
